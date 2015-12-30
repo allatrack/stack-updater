@@ -84,6 +84,7 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 * Update software on server before deploy in [Capistrano](http://capistranorb.com/)
 
 ## <a name="running"></a> Running the application
+
 ```python ./updater [-h] {get,install,check} [gist_id|recipe_dir]```
 
 ## <a name="cli-options"></a> Command line options
@@ -99,7 +100,7 @@ get                 |   Github Gist id  | Download new recipe from Gist
 ## <a name="install-recipes"></a> Install recipes from [Gist](https://gist.github.com/discover)
 
  _Not recommended on production!!!_
- 
+
  If the recipe is in a gist file, you can use the following command ```python ./updater get GIST_ID```, and it will copy all the files in needed place. Be sure to check out the gist's README to see if you need to do any extra configuration.
 
 ## <a name="save-systemd-command"></a> Save as system command
