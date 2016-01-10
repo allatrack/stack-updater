@@ -17,6 +17,12 @@ engines:
     checks:
       MD004:
         enabled: false
+      MD005:
+        enabled: false
+      MD006:
+        enabled: false
+      MD007:
+        enabled: false
       MD013:
         enabled: false
       MD026:
