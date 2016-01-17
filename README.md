@@ -100,7 +100,7 @@ get                 | Github Gist id | Download new recipe from Gist
 ## <a name="install-recipes"></a> Install recipes from [Gist](https://gist.github.com/discover)
 
  _Not recommended on production!!!_
- 
+
  If the recipe is in a gist file, you can use the following command ```python ./updater get GIST_ID```, and it will copy all the files in needed place. Be sure to check out the gist's README to see if you need to do any extra configuration.
 
 ## <a name="save-systemd-command"></a> Save as system command
