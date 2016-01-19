@@ -10,8 +10,23 @@ engines:
     enabled: true
   radon:
     enabled: true
+    config:
+      threshold: "C"
   markdownlint:
     enabled: true
+    checks:
+      MD004:
+        enabled: false
+      MD013:
+        enabled: false
+      MD026:
+        enabled: false
+      MD031:
+        enabled: false
+      MD033:
+        enabled: false
+      MD036:
+        enabled: false
 ratings:
   paths:
   - "**.py"
