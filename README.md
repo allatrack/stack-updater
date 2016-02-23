@@ -65,7 +65,7 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 ![](./resources/how-to-use.png)
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
 * Copy stack updater with recipe directory to destination machine (server 
-for example). You can copy with developer repo? or install in opt directory
+for example). You can copy with developer repo or install in opt directory
 * configure your deploy or provision process to run this script
  
 **If dependencies check failed stack updater exit with ```code 1```**
@@ -76,17 +76,20 @@ for example). You can copy with developer repo? or install in opt directory
 * Update software on server before deploy in [Capistrano](http://capistranorb.com/)
 
 ## <a name="running"></a> Running the application
-```python ./updater [-h] {get,install,check} [gist_id]```
+```python ./updater [-h] {get,install,check} [gist_id|recipe_dir]```
 
 ## <a name="cli-options"></a> Command line options
 
-Command line option |     Params     | Description
-------------------- | -------------- | ------------------------
-check               |                | Check application dependencies
-install             |                | Trying to install newer package version if needed (by checking)
-get                 | Github Gist id | Download new recipe from Gist
---verbose(-v)       |                | With this flag you can see on the display(not in the log file) triggered command output 
---help(-h)          |                | Command line usage
+Command line option |       Params      | Description
+------------------- | ----------------- | ------------------------
+check               | Recipes directory | Check application dependencies. 
+If empty - get recipes from «recipe» directory inside updater 
+install             |                   | Trying to install newer package 
+version if needed (by checking)
+get                 |   Github Gist id  | Download new recipe from Gist
+--verbose(-v)       |                   | With this flag you can see on the 
+display(not in the log file) triggered command output 
+--help(-h)          |                   | Command line usage
 
 ## <a name="install-recipes"></a> Install recipes from [Gist](https://gist.github.com/discover)
 
@@ -111,7 +114,10 @@ sudo ln -s updater /usr/bin
 
 ## <a name="logging"></a> Logging
 
-Log files are in ```log``` directory. Current log in ```updater.log``` file. Note that you can`t see triggered command output (they are all in log file), only script output.
+Log files are in ```/var/log/stack-updater``` directory (if global_log is
+true) otherwise in
+```log``` directory inside updater. Current log in ```updater.log``` file. 
+Note that you can`t see triggered command output (they are all in log file), only script output.
  
 # <a name="cookbook"></a> Native and Third party recipes
 
