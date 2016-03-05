@@ -1,80 +1,133 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 import os
 import sys
 import subprocess
 import logging
 import json
-from distutils.version import LooseVersion, StrictVersion
+import urllib2
+import argparse
+from versionhelper import VersionHelper
 
-def version_compare(v1, v2, op=None):
-    _map = {
-        '<': [-1],
-        'lt': [-1],
-        '<=': [-1, 0],
-        'le': [-1, 0],
-        '>': [1],
-        'gt': [1],
-        '>=': [1, 0],
-        'ge': [1, 0],
-        '==': [0],
-        'eq': [0],
-        '!=': [-1, 1],
-        'ne': [-1, 1],
-        '<>': [-1, 1]
-    }
-    v1 = LooseVersion(v1)
-    v2 = LooseVersion(v2)
-    result = cmp(v1, v2)
-    if op:
-        assert op in _map.keys()
-        return result in _map[op]
-    return result
 
-# Initialize loging
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-logger = logging.getLogger()
-logFilePath = "./checkdependencies.log"
-fileHandler = logging.FileHandler(logFilePath)
-fileHandler.setFormatter(logFormatter)
-logger.addHandler(fileHandler)
+class DependenciesChecker(object):
 
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(logFormatter)
-logger.addHandler(consoleHandler)
+    log_file_path = "./checkdependencies.log"
+    recipes_path = "./recipes"
+    recipes = []
+    recipes_to_install = []
+    exit_code = 0
+    logger = None
+    cli_args = None
 
-# All logs are recording
-logger.setLevel(logging.NOTSET)
+    def __init__(self):
+        pass
 
-logger.info("Start check dependencies")
+    @staticmethod
+    def get_gist(id):
+        """
 
-# Load receipt files
-receipesPath = "./receipes"
-try:
-    receipeFiles = [posReceipe for posReceipe in os.listdir(receipesPath) if posReceipe.endswith('.json')]
-except Exception as e:
-    logger.critical("There is no one receipt file in receipt directory. So sad :'(")
-    raise e
+        :param id: Github Gist Id
+        :return:
+        """
 
-# Load all receipts
-receipes = []
-try:
-    for receipeFile in receipeFiles:
-	with open(os.path.join(receipesPath, receipeFile)) as receipeFilePath:
-	    for receipe in json.load(receipeFilePath):
-	        receipes.insert(0, receipe)
-    logger.info("Receipes was loaded")
-except Exception as e:
-    logger.critical("Receipe files is not valid JSON")
-    raise e
+        gist = json.load(urllib2.urlopen('https://api.github.com/gists/{}'.format(id)))
+        #if 'files' in
 
-exitCode = 0;
-for receipe in receipes:
-    realVersion = subprocess.Popen(receipe["command"], stdout=subprocess.PIPE, shell=True).stdout.read()
-    if version_compare(realVersion, receipe["required"], receipe["comparsion"]):
-        logger.info("{} version is valid".format(receipe["name"]))
-    else:
-        logger.error("{} version is outdated. Expected {} instead {}".format(receipe["name"], receipe["required"], realVersion))
-        exitCode = 1 #general Error
+    def log_init(self, log_type):
+        """
 
-sys.exit(exitCode)
+        :param log_type: Type of log to recording. Example logging.NOTSET
+        """
+        log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+        self.logger = logging.getLogger()
+        file_handler = logging.FileHandler(self.log_file_path)
+        file_handler.setFormatter(log_formatter)
+        self.logger.addHandler(file_handler)
+
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(log_formatter)
+        self.logger.addHandler(console_handler)
+
+        self.logger.setLevel(log_type)
+
+    def cli_init(self):
+        """
+        Initialize CLI arguments
+        """
+        parser = argparse.ArgumentParser(description='Check dependencies by recipe.')
+        parser.add_argument('action', choices=['get', 'install', 'check'], default='check', nargs=1, help='get: Download recipe from Gist; install: Trying to install newer package versions; check: Simple check')
+        parser.add_argument('gist_id', nargs='*', help='Gist ID to download recipe')
+
+        self.cli_args = parser.parse_args()
+
+    def load_recipes(self):
+
+        try:
+            recipe_files = [pos_recipe for pos_recipe in os.listdir(self.recipes_path) if pos_recipe.endswith('.json')]
+        except Exception as e:
+            self.logger.critical("There is no one receipt file in receipt directory. So sad :'(")
+            raise e
+
+        try:
+            for recipe_file in recipe_files:
+                with open(os.path.join(self.recipes_path, recipe_file)) as recipe_file_path:
+                    for recipe in json.load(recipe_file_path):
+                        self.recipes.insert(0, recipe)
+            self.logger.info("Recipes was loaded")
+        except Exception as e:
+            self.logger.critical("Recipe files is not valid JSON")
+            raise e
+
+    def check(self):
+        """
+        Dependency checking without installing required version
+        """
+        self.logger.info("Start check dependencies")
+        for recipe in self.recipes:
+            real_version = subprocess.Popen(recipe["command"], stdout=subprocess.PIPE, shell=True).stdout.read()
+            if VersionHelper.version_compare(real_version, recipe["required"], recipe["comparison"]):
+                self.logger.info("{} version is valid".format(recipe["name"]))
+            else:
+                self.recipes_to_install.insert(0, recipe)
+                self.logger.error(
+                    "{} version is outdated. Expected {} instead {}".format(recipe["name"], recipe["required"], real_version))
+                exit_code = 1  # general Error
+
+    def install(self):
+        """
+        Dependency checking without installing required version
+        """
+        for recipe in self.recipes_to_install:
+            real_version = subprocess.Popen(recipe["command"], stdout=subprocess.PIPE, shell=True).stdout.read()
+            if VersionHelper.version_compare(real_version, recipe["required"], recipe["comparison"]):
+                self.logger.info("{} version is valid".format(recipe["name"]))
+            else:
+                self.recipes_to_install.insert(0, recipe)
+                self.logger.error(
+                    "{} version is outdated. Expected {} instead {}".format(recipe["name"], recipe["required"], real_version))
+                exit_code = 1  # general Error
+
+    def run(self):
+
+        self.log_init(logging.NOTSET)
+        self.cli_init()
+
+        if self.cli_args.action == ['get']:
+            if len(self.cli_args.gist_id) > 0:
+                self.get_gist(self.cli_args.gist_id[0])
+            else:
+                self.logger.error('Gist id not defined')
+        else:
+            self.load_recipes()
+            self.check()
+            if self.cli_args.action == ['install']:
+                print "install"
+                self.install()
+
+        sys.exit(self.exit_code)
+
+
+d_checker = DependenciesChecker()
+d_checker.run()
