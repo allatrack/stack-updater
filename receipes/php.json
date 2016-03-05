@@ -1,0 +1,14 @@
+[
+    {
+        "name": "PHP",
+	"command": "/usr/bin/php -r 'echo phpversion();'",
+	"required": "5.6.17",
+	"comparsion": ">="
+    },
+    {
+        "name": "Mongo driver for PHP",
+        "command": "/usr/bin/php -r 'echo phpversion(\"mongo\");'",
+        "required": "1.6.0",
+        "comparsion": ">="
+    }
+]
