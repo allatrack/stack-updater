@@ -1,7 +1,8 @@
 # coding=utf-8
 
+import sys
 import argparse
-from logger import Logger
+from logger import logger
 from downloader import Downloader
 from dependency import Dependency
 
@@ -24,25 +25,23 @@ class Cli(object):
         self.__base_path = base_path
 
     def run(self):
-        possibles = globals().copy()
-        possibles.update(locals())
-        method = possibles.get(self.__cli_args.action[0])
+        method = getattr(self, self.__cli_args.action[0])
         if not method:
-            Logger().error("Method {} not implemented".format(method_name))
-            raise NotImplementedError("Method {} not implemented".format(method_name))
+            logger.error("Method {} not implemented".format(self.__cli_args.action[0]))
+            raise NotImplementedError("Method {} not implemented".format(self.__cli_args.action[0]))
         method()
 
-    def get():
+    def get(self):
         """
         Download recipe from Gist
         """
-        if len(self.cli_args.gist_id) > 0: #ID of Gist not empty
+        if len(self.__cli_args.gist_id) > 0: #ID of Gist not empty
             recipe_downloader = Downloader(self.__base_path, self.__cli_args.gist_id[0])
             recipe_downloader.install_gist()
         else:
-            Logger().error('Gist id not defined')
+            logger.error('Gist id not defined')
 
-    def check():
+    def check(self):
         """
         Check dependencies
         """
@@ -51,12 +50,11 @@ class Cli(object):
 
         sys.exit(exit_code)
 
-    def install():
+    def install(self):
         """
         Install dependencies
         """
         installer = Dependency(self.__base_path)
-        print "install"
         exit_code = installer.install()
 
         sys.exit(exit_code)
