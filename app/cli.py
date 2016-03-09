@@ -23,6 +23,15 @@ class Cli(object):
 
         self.__base_path = base_path
 
+    def run(self):
+        possibles = globals().copy()
+        possibles.update(locals())
+        method = possibles.get(self.__cli_args.action[0])
+        if not method:
+            Logger().error("Method {} not implemented".format(method_name))
+            raise NotImplementedError("Method {} not implemented".format(method_name))
+        method()
+
     def get():
         """
         Download recipe from Gist
@@ -51,12 +60,3 @@ class Cli(object):
         exit_code = installer.install()
 
         sys.exit(exit_code)
-
-    def run(self):
-        possibles = globals().copy()
-        possibles.update(locals())
-        method = possibles.get(self.__cli_args.action[0])
-        if not method:
-            Logger().error("Method {} not implemented".format(method_name))
-            raise NotImplementedError("Method {} not implemented".format(method_name))
-        method()

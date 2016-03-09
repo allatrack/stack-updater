@@ -1,5 +1,0 @@
-# Use it like this:
-#
-#   pip install -r requirements.txt
-
-## Nothing

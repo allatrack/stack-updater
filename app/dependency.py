@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 import json
+import itertools
 from helpers.version import VersionHelper
 from logger import Logger
 from config import *
@@ -29,10 +30,12 @@ class Dependency(object):
             raise e
 
         try:
-            for recipe_file in recipe_files:
-                with open(os.path.join(self.__recipes_file_path, recipe_file)) as recipe_file_path:
-                    for recipe in json.load(recipe_file_path):
-                        self.__recipes.insert(0, recipe)
+            # Now recipes in 2 dimensional list :(
+            recipes =  [json.load(open(os.path.join(self.__recipes_file_path, recipe_file))) for recipe_file in recipe_files]
+            self.__recipes = list(itertools.chain(*recipes)) # convert in 1 dimensional
+            #for recipe_file in recipe_files:
+            #    for recipe in json.load(open(os.path.join(self.__recipes_file_path, recipe_file))):
+            #        self.__recipes.insert(0, recipe)
             Logger().info("Recipes was loaded")
         except Exception as e:
             Logger().critical("Recipe files is not valid JSON")
