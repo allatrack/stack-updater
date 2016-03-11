@@ -1,7 +1,7 @@
 # What is it?
-Stack updater check dependency and update your app stack in a simplest way. 
-This is DevOps tool for lazy programmers. Only json and bash file configure you need.
-This application allows you to deploy you projects and not worry about breaking your project due to outdated package on the server.
+Stack updater check dependencies and updates your app stack in a simplest way. 
+This is DevOps tool for lazy programmers. Only json and bash file configure you needs.
+This application allows you to deploy you projects and not worry about breaking your project due to outdated package on server.
 
 # Table of contents
 - [Goals](#goals)
@@ -19,39 +19,40 @@ This application allows you to deploy you projects and not worry about breaking 
 - [Customizing](#customizing)
 - [Contributing](#contributing)
 - [Recipes and log filesystem](#filesystem)
+- [Case study](#case-study)
 - [License](#license)
 
 # <a name="goals"></a> Goals
-Sometimes you'r deploying your app on server and it won't work. You work hard to debug your code but it turns out that the problem was in an obsolete software on the server.
+Sometimes your app doesn't work after deploying it on server. You worked hard to debug your code but it turned out that the problem was in an obsolete software on the server.
 Crap!!!
 
 Sounds Familiar?
 
 That`s why my main criteria:
- * To make it easy environment package dependency checking.
- * To provide easy on demand package installation tool.
+ * To make package dependencies checking easier.
+ * To provide an easy package installation tool when it's necessary.
  * Being simple and scalable.
 
 # <a name="how-does-it-work"></a> How does it work?
 
-When you are called ```python ./updater check```, the script do following:
+When you are called ```python ./updater check```, the script does following:
 * Read all json recipes from ```recipes``` folder. 
 * Then execute ```command``` prop value from json object (example ```/usr/bin/php -r 'echo phpversion();'```). Command must return version number of package or module (nothing more!!!).
-* Then this value compare with ```required``` prop value and return result.
+* Then this value is compared with ```required``` prop value and return result.
 
 Also, if you call ```python ./updater install```, after checking, script will try to execute ```installer``` filename from ```recipes``` subdirectory with the same name as recipe filename.
 
 # <a name="why-not"></a> Why not Puppet, Chef, SaltStack or Ansible?
 
-That's a question that's been asked to me, why not simply use Puppet or Chef or SaltStack or Ansible? That tools are perfect. 
+I've been asked why just not simply use Puppet, Chef, SaltStack or Ansible? That tools are perfect. 
 I've used Puppet and Chef in the past, it does everything you want it to do, that's a given.
-But it remains *master-agent model* and a lot of DevOps knowledge. 
+But all of these products are required a lot of DevOps's knowledge and use *master-agent model*. 
 
 I'm just a programmer!
 Sometimes I want simply write rules or *recipes* to check dependencies and install package from "Googling Stackoverflow" (write simple bash files).
 Stack updater aims to be as simple as possible by providing simple recipes and Github Gist add-on system.
 
-Also I love Python and it installed out the box on most linux distributions ;)
+Also I love Python and it's installed out the box on most linux distributions ;)
 
 # <a name="start"></a>Getting started
 ## <a name="dependencies"></a> Dependencies
@@ -59,8 +60,10 @@ Also I love Python and it installed out the box on most linux distributions ;)
 
 ## <a name="configuration"></a> Configuration
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
-* Copy script with app, log and recipe directory to destination machine
-* configure your deploy or provision process to run this script
+* Copy stack updater with recipe directory to destination machine (server for example)
+* configure your deploy or provision process to run this script (See [Case study](#case-study))
+
+**If dependencies check failed stack updater exit with ```code 1```**
 
 ## <a name="running"></a> Running the application
 ```python ./updater [-h] {get,install,check} [gist_id]```
@@ -78,7 +81,7 @@ get                 | Github Gist id | Download new recipe from Gist
 
  _Not recommended on production!!!_
  
- If the recipe is in a gist file, you can use the command ```python ./updater get GIST_ID```, and it will copy all the files in place. Be sure to check out the gist's README to see if you need to do any extra configuration.
+ If the recipe is in a gist file, you can use the following command ```python ./updater get GIST_ID```, and it will copy all the files in needed place. Be sure to check out the gist's README to see if you need to do any extra configuration.
 
 ## <a name="save-systemd-command"></a> Save as system command
 Try to create symlink to executable file 
@@ -110,9 +113,9 @@ This is a list of user submitted Stack updater recipes. Each one contains a link
 # <a name="customizing"></a> Customizing
 
 Stack updater can be extensively configured via the recipes in folder recipes.
- * Add new json file like ```recipes/recipe.json.example```. Filename is not important.
- * Add bash executable for packet installation if needed and put it in folder with same name as recipe. 
- * Comparison rules are simple, but if you want they are defined in ```app/helpers/version.py```
+ * Add new json file like ```recipes/recipe.json.example```. Filename is not important. Only ```json``` ending
+ * Add bash executable for package installation if needed and put it in folder with same name as recipe. 
+ * Comparison rules are simple, but if you want to customize them, see ```app/helpers/version.py```
  
 # <a name="contributing"></a> Contributing
  
@@ -145,5 +148,7 @@ Stack updater can be extensively configured via the recipes in folder recipes.
 └── ...
 ```
 
+# <a name="case-study"></a> Case study
+
 # <a name="license"></a> License
-Distributed under the [MIT license](MIT-LICENSE)
+Distributed under the [MIT license](LICENSE)

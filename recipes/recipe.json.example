@@ -4,12 +4,14 @@
     "command": "/usr/bin/php -r 'echo phpversion();'",
     "required": "7.0.0",
     "comparison": ">=",
-    "installer": "php7.sh"
+    "installer": "php7.sh",
+    "order": "2"
   },
   {
     "name": "Mongo driver for PHP",
     "command": "/usr/bin/php -r 'echo phpversion(\"mongo\");'",
     "required": "1.6.0",
     "comparison": ">=",
+    "order": "3"
   }
 ]
