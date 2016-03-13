@@ -1,3 +1,5 @@
+[![Analytics](https://ga-beacon.appspot.com/UA-75053442-1/stack-updater)](https://github.com/igrigorik/ga-beacon)
+
 # What is it?
 Stack updater check dependencies and updates your app stack in a simplest way. 
 This is DevOps tool for lazy programmers. Only json and bash file configure you needs.
