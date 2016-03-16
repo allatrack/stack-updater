@@ -17,7 +17,7 @@ This application allows you to deploy you projects and not worry about breaking 
   - [Install recipes from Gist](#install-recipes)
   - [Save as system command](#save-systemd-command)
   - [Logging](#logging)
-- [Native and Third party recipes](#recipes)
+- [Native and Third party recipes](#cookbook)
 - [Customizing](#customizing)
 - [Contributing](#contributing)
 - [Recipes and log filesystem](#filesystem)
@@ -61,6 +61,7 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 * Python (version 2.7 and above)
 
 ## <a name="configuration"></a> Configuration
+![](./docs/how-to-use.png)
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
 * Copy stack updater with recipe directory to destination machine (server for example)
 * configure your deploy or provision process to run this script (See [Case study](#case-study))
@@ -104,13 +105,9 @@ sudo ln -s updater /usr/bin
 
 Log files are in ```log``` directory. Current log in ```updater.log``` file. Note that you can`t see triggered command output (they are all in log file), only script output.
  
-# <a name="recipes"></a> Native and Third party recipes
+# <a name="cookbook"></a> Native and Third party recipes
 
-This is a list of user submitted Stack updater recipes. Each one contains a link to how to use it, package list and distro to use.
-
-   Name     |     Packages     |       Distro      |    Author    
------------ | ---------------- | ----------------- | -------------
-[Laravel 5.2](https://gist.github.com/levabd/13c3213830cecacbd347)|<ul><li>PHP7</li><li>NGINX</li><li>PHP mongo driver for php-fpm and php-cli</li><li>beanstalkd</li></ul>|Debian-like|[Oleg Levitsky](https://github.com/levabd) and [Max Peshkov](https://github.com/peshkov3)
+This is a list of user submitted Stack updater recipes you can see in wiki [Cookbook](https://github.com/levabd/stack-updater/wiki/Cookbook). 
 
 # <a name="customizing"></a> Customizing
 

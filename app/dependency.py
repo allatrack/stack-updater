@@ -4,6 +4,7 @@ import os
 import subprocess
 import json
 from helpers import VersionHelper
+from helpers import ProcessWrapper
 from logger import logger
 from config import *
 
@@ -74,4 +75,4 @@ class Dependency(object):
             logger.info("Trying to update {}".format(recipe["name"]))
             cmd =  "sudo sh " + os.path.join(self.__recipes_file_path, recipe["filename"], recipe["installer"])
             logger.info("Execute {}".format(cmd))
-            logger.log_command(cmd, self.__recipes_file_path)
+            ProcessWrapper().call([cmd], cwd = self.__recipes_file_path, shell = True)

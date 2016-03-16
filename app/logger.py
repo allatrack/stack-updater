@@ -94,18 +94,5 @@ class Logger(Singleton):
 
         self.__logger.setLevel(log_type)
 
-    def log_command(self, cmd, path):
-        """
-
-        :param path: The path where the command is run
-        :type cmd: Command to call. Single string or array
-        """
-
-        with open(self.__log_file_path, 'a') as logfile:
-            subprocess.call(cmd if isinstance(cmd, list) else [cmd],
-                            cwd = path,
-                            stdout = logfile,
-                            stderr = logfile,
-                            shell = True)
 
 logger = Logger() #simple alias without ugly brackets
