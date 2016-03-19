@@ -12,6 +12,7 @@ This application allows you to deploy you projects and not worry about breaking 
 - [Getting started](#start)
   - [Dependencies](#dependencies)
   - [Configuration](#configuration)
+  - [Case study](#case-study)
   - [Running the application](#running)
   - [Command line options](#cli-options)
   - [Install recipes from Gist](#install-recipes)
@@ -21,7 +22,6 @@ This application allows you to deploy you projects and not worry about breaking 
 - [Customizing](#customizing)
 - [Contributing](#contributing)
 - [Recipes and log filesystem](#filesystem)
-- [Case study](#case-study)
 - [License](#license)
 
 # <a name="goals"></a> Goals
@@ -64,9 +64,14 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 ![](./docs/how-to-use.png)
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
 * Copy stack updater with recipe directory to destination machine (server for example)
-* configure your deploy or provision process to run this script (See [Case study](#case-study))
-
+* configure your deploy or provision process to run this script
+ 
 **If dependencies check failed stack updater exit with ```code 1```**
+
+## <a name="case-study"></a> Case study
+
+* Vagrant init scrips (after ```vagrant up``` or ```vagrant provision```)
+* Update software on server before deploy in [Capistrano](http://capistranorb.com/)
 
 ## <a name="running"></a> Running the application
 ```python ./updater [-h] {get,install,check} [gist_id]```
@@ -146,8 +151,6 @@ Stack updater can be extensively configured via the recipes in folder recipes.
 ├── app #app folder from this repo
 └── ...
 ```
-
-# <a name="case-study"></a> Case study
 
 # <a name="license"></a> License
 Distributed under the [MIT license](LICENSE)

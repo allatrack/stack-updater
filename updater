@@ -10,7 +10,7 @@ if __name__ == '__main__':
     sys.path.append(base_path)
 
     from app import Cli
-    from app import logger
+    from app.lib import logger
     from app.config import *
 
     logger.init_logger(logging.NOTSET, os.path.join(base_path, log_path()))

@@ -1,11 +1,12 @@
 # coding=utf-8
 
+import json
 import os
 import subprocess
-import json
-from helpers import VersionHelper
-from helpers import ProcessWrapper
-from logger import logger
+
+from app.lib.wrappers import ProcessWrapper
+from app.lib.helpers import VersionHelper
+from app.lib import logger
 from config import *
 
 
@@ -13,15 +14,6 @@ class Dependency(object):
 
     __recipes = []
     __recipes_to_install = []
-
-    @property
-    def __extract_order(json):
-        try:
-            # Also convert to int since update_time will be string.  When comparing
-            # strings, "10" is smaller than "2".
-            return int(json['page']['update_time'])
-        except KeyError:
-            return 0
 
     def __init__(self, base_path):
         """
@@ -38,12 +30,11 @@ class Dependency(object):
         try:
             for recipe_file in recipe_files:
                 recipes_from_file = json.load(open(os.path.join(self.__recipes_file_path, recipe_file)))
-                recipes_from_file.sort(key = lambda k: k.get('order', 0), reverse = True)
+                recipes_from_file.sort(key = lambda k: k.get('order', 0))
                 for recipe in recipes_from_file:
                     recipe['filename'] = os.path.splitext(recipe_file)[0]
                     self.__recipes.insert(0, recipe)
             logger.info("Recipes was loaded")
-            print self.__recipes
         except Exception as e:
             logger.critical("Recipe files is not valid JSON")
             raise e
@@ -69,10 +60,13 @@ class Dependency(object):
         """
         Dependency checking with installing required version
         """
-        self.check()
+        exit_code = self.check()
 
         for recipe in self.__recipes_to_install:
             logger.info("Trying to update {}".format(recipe["name"]))
             cmd =  "sudo sh " + os.path.join(self.__recipes_file_path, recipe["filename"], recipe["installer"])
             logger.info("Execute {}".format(cmd))
-            ProcessWrapper().call([cmd], cwd = self.__recipes_file_path, shell = True)
+            if not ProcessWrapper().call([cmd], cwd = self.__recipes_file_path, shell = True):
+                exit_code = 1  # general Error
+
+        return exit_code

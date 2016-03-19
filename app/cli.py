@@ -1,10 +1,11 @@
 # coding=utf-8
 
-import sys
 import argparse
-from logger import logger
-from downloader import Downloader
+import sys
+
+from app.lib import logger
 from dependency import Dependency
+from downloader import Downloader
 
 
 class Cli(object):
