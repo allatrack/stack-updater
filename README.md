@@ -83,6 +83,7 @@ Command line option |     Params     | Description
 check               |                | Check application dependencies
 install             |                | Trying to install newer package version if needed (by checking)
 get                 | Github Gist id | Download new recipe from Gist
+--verbose(-v)       |                | With this flag you can see on the display(not in the log file) triggered command output 
 --help(-h)          |                | Command line usage
 
 ## <a name="install-recipes"></a> Install recipes from [Gist](https://gist.github.com/discover)

@@ -56,7 +56,7 @@ class Dependency(object):
                 exit_code = 1  # general Error
         return exit_code
 
-    def install(self):
+    def install(self, verbose):
         """
         Dependency checking with installing required version
         """
@@ -66,7 +66,22 @@ class Dependency(object):
             logger.info("Trying to update {}".format(recipe["name"]))
             cmd =  "sudo sh " + os.path.join(self.__recipes_file_path, recipe["filename"], recipe["installer"])
             logger.info("Execute {}".format(cmd))
-            if not ProcessWrapper().call([cmd], cwd = self.__recipes_file_path, shell = True):
+
+            # Unfortunately ProcessWrapper() much slower
+            if verbose:
+                cmd_result = logger.log_command(cmd, self.__recipes_file_path)
+            else:
+                cmd_result = subprocess.call([cmd], cwd = self.__recipes_file_path, shell = True)
+
+            if cmd_result > 0:
+                logger.error("{} dependency was not updated".format(recipe["name"]))
                 exit_code = 1  # general Error
+            else:
+                logger.info("{} dependency was successfully updated.".format(recipe["name"]))
+
+        if exit_code > 0:
+            logger.info("Not all dependency was successfully updated. Check the log please.")
+        else:
+            logger.info("All dependency was successfully updated.")
 
         return exit_code
