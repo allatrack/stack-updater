@@ -20,7 +20,7 @@ class Cli(object):
         parser = argparse.ArgumentParser(description='Check dependencies by recipe.')
         parser.add_argument('action', choices=['get', 'install', 'check'], default='check', nargs=1, help='get: Download recipe from Gist; \ninstall: Trying to install newer package versions; \ncheck: Simple check')
         parser.add_argument('gist_id', nargs='*', help='Gist ID to download recipe')
-        parser.add_argument("-v", "--verbose", help="With this flag you can see on the display(not in the log file) triggered command output.")
+        parser.add_argument("-v", "--verbose", action="store_true", help="With this flag you can see on the display(not in the log file) triggered command output.")
 
         self.__cli_args = parser.parse_args()
 
@@ -57,6 +57,6 @@ class Cli(object):
         Install dependencies
         """
         installer = Dependency(self.__base_path)
-        exit_code = installer.install(self.__cli_args.verbosity)
+        exit_code = installer.install(self.__cli_args.verbose)
 
         sys.exit(exit_code)

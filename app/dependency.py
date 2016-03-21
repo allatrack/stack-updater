@@ -4,7 +4,6 @@ import json
 import os
 import subprocess
 
-from app.lib.wrappers import ProcessWrapper
 from app.lib.helpers import VersionHelper
 from app.lib import logger
 from config import *
@@ -52,26 +51,34 @@ class Dependency(object):
             else:
                 self.__recipes_to_install.insert(0, recipe)
                 logger.error(
-                    "{} version is outdated. Expected {} instead {}".format(recipe["name"], recipe["required"], real_version))
+                    "{} version is outdated. Expected {} instead {}".format(recipe["name"], recipe["required"], real_version.strip()))
                 exit_code = 1  # general Error
         return exit_code
 
     def install(self, verbose):
         """
         Dependency checking with installing required version
+        :param verbose: if False then print console output into log file
         """
-        exit_code = self.check()
+        self.check()
+
+        exit_code = 0
 
         for recipe in self.__recipes_to_install:
             logger.info("Trying to update {}".format(recipe["name"]))
-            cmd =  "sudo sh " + os.path.join(self.__recipes_file_path, recipe["filename"], recipe["installer"])
+            if "installer" in recipe:
+                cmd =  "sudo sh " + os.path.join(self.__recipes_file_path, recipe["filename"], recipe["installer"])
+            else:
+                logger.info("I don't know how to install {}. Please specify \"installer\" property in json recipe".format(recipe["name"]))
+                exit_code = 1  # general Error
+                continue
             logger.info("Execute {}".format(cmd))
 
             # Unfortunately ProcessWrapper() much slower
             if verbose:
-                cmd_result = logger.log_command(cmd, self.__recipes_file_path)
-            else:
                 cmd_result = subprocess.call([cmd], cwd = self.__recipes_file_path, shell = True)
+            else:
+                cmd_result = logger.log_command(cmd, self.__recipes_file_path)
 
             if cmd_result > 0:
                 logger.error("{} dependency was not updated".format(recipe["name"]))
