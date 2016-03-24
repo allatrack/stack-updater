@@ -4,8 +4,8 @@ import json
 import os
 import subprocess
 
-from app.lib.helpers import VersionHelper
-from app.lib import logger
+from lib.helpers import VersionHelper
+from lib import logger
 from config import *
 
 

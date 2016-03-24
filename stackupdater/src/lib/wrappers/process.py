@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from logger import logger
+from lib import logger
 
 class ProcessWrapper(object):
     """Wraps the subprocess popen method and provides logging."""

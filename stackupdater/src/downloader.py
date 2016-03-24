@@ -4,9 +4,9 @@ import json
 import os
 import urllib2
 
-from app.config import *
-from app.lib import logger
-from app.lib.wrappers import silent_remove
+from config import *
+from lib import logger
+from lib.wrappers import silent_remove
 
 
 class Downloader(object):

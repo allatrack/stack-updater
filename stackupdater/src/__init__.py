@@ -2,5 +2,3 @@
 from config import *
 from dependency import *
 from downloader import *
-
-from cli import *

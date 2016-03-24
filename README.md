@@ -7,7 +7,7 @@ This application allows you to deploy you projects and not worry about breaking 
 
 # Table of contents
 - [Goals](#goals)
-- [Why not Puppet, Chef, SaltStack or Ansible?](#how-does-it-work)
+- [How does it work?](#how-does-it-work)
 - [Why not Puppet or Chef or etc?](#why-not)
 - [Getting started](#start)
   - [Dependencies](#dependencies)
@@ -61,7 +61,7 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 * Python (version 2.7 and above)
 
 ## <a name="configuration"></a> Configuration
-![](./docs/how-to-use.png)
+![](./resources/how-to-use.png)
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
 * Copy stack updater with recipe directory to destination machine (server for example)
 * configure your deploy or provision process to run this script
@@ -149,7 +149,9 @@ Stack updater can be extensively configured via the recipes in folder recipes.
 │    ├── updater.log #current log
 │    ├── updater.log.2016-03-09_21-48-51 # for example
 │    └── ...
-├── app #app folder from this repo
+├── stackupdater #app folder
+├── docs #for auto-generated HTML documentation ([Sphinx](http://www.sphinx-doc.org/), [ReadTheDocs](https://readthedocs.org/))
+├── resources #any additional files
 └── ...
 ```
 

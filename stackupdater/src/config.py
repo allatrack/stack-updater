@@ -5,3 +5,4 @@ def log_path():
 
 def recipe_path():
     return "recipes"
+

@@ -9,9 +9,9 @@ if __name__ == '__main__':
     base_path = os.path.dirname(os.path.realpath(__file__))
     sys.path.append(base_path)
 
-    from app import Cli
-    from app.lib import logger
-    from app.config import *
+    from stackupdater.bin import Cli
+    from stackupdater.src.lib import logger
+    from stackupdater.src.config import *
 
     logger.init_logger(logging.NOTSET, os.path.join(base_path, log_path()))
 

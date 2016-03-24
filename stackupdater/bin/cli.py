@@ -3,9 +3,9 @@
 import argparse
 import sys
 
-from app.lib import logger
-from dependency import Dependency
-from downloader import Downloader
+from stackupdater.src.lib import logger
+from stackupdater.src.dependency import Dependency
+from stackupdater.src.downloader import Downloader
 
 
 class Cli(object):
