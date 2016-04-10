@@ -64,7 +64,8 @@ Also I love Python and it's installed out the box on most linux distributions ;)
 ## <a name="configuration"></a> Configuration
 ![](./resources/how-to-use.png)
 * [Install](#install-recipes) or [create](#customizing) recipes on developer machine
-* Copy stack updater with recipe directory to destination machine (server for example)
+* Copy stack updater with recipe directory to destination machine (server 
+for example). You can copy with developer repo? or install in opt directory
 * configure your deploy or provision process to run this script
  
 **If dependencies check failed stack updater exit with ```code 1```**
