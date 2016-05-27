@@ -65,8 +65,5 @@ target/
 #PyCharm
 .idea
 
-#Ignore receipe
-recipes/
-
 #Logs
 log/
