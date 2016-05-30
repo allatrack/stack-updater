@@ -14,12 +14,12 @@ class Dependency(object):
     __recipes = []
     __recipes_to_install = []
 
-    def __init__(self, base_path):
+    def __init__(self, base_path, recipe_path = ''):
         """
         Load recipes from file
         """
         logger.info("Start loading recipes")
-        self.__recipes_file_path = os.path.join(base_path, recipe_path())
+        self.__recipes_file_path = recipe_path or os.path.join(base_path, default_recipe_path())
         try:
             recipe_files = [pos_recipe for pos_recipe in sorted(os.listdir(self.__recipes_file_path)) if pos_recipe.endswith('.json')]
         except Exception as e:

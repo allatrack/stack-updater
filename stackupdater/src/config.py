@@ -3,6 +3,6 @@
 def log_path():
     return "log"
 
-def recipe_path():
+def default_recipe_path():
     return "recipes"
 

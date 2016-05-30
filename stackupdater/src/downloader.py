@@ -14,8 +14,8 @@ class Downloader(object):
     __recipes_path = "./recipes"
     __gist_id = 0
 
-    def __init__(self, base_path, gist_id):
-        self.__recipes_path = os.path.join(base_path, recipe_path())
+    def __init__(self, base_path, gist_id, recipe_path = ''):
+        self.__recipes_path = recipe_path or os.path.join(base_path, default_recipe_path())
         self.__gist_id = gist_id
 
     def install_gist(self):
