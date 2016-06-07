@@ -1,6 +1,9 @@
 # coding=utf-8
 
-def log_path():
+def global_log():
+    return True
+
+def local_log_path():
     return "log"
 
 def default_recipe_path():
