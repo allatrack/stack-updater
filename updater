@@ -13,7 +13,9 @@ if __name__ == '__main__':
     from stackupdater.src.lib import logger
     from stackupdater.src.config import *
 
-    logger.init_logger(logging.NOTSET, "/var/log/stack-updater" if global_log() else os.path.join(base_path, local_log_path()))
+    logger_path = "/var/log/stack-updater" if global_log() else os.path.join(base_path, local_log_path())
+    print "Logging into {}".format(logger_path)
+    logger.init_logger(logging.NOTSET, logger_path)
 
     cli = Cli(base_path)
     cli.run()

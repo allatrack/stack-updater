@@ -51,7 +51,7 @@ class Dependency(object):
             else:
                 self.__recipes_to_install.insert(0, recipe)
                 logger.error(
-                    "{} version is outdated. Expected {} instead {}".format(recipe["name"], recipe["required"], real_version.strip()))
+                    "{} version is outdated. Expected {} instead of \"{}\"".format(recipe["name"], recipe["required"], real_version.strip()))
                 exit_code = 1  # general Error
         return exit_code
 
