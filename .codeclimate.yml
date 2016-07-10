@@ -1,0 +1,17 @@
+engines:
+  engines:
+  pep8:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - python
+ratings:
+  paths:
+  - "**.py"
+exclude_paths:
+- recipes/*
+- log/*
+- recources/*
+- docs/*

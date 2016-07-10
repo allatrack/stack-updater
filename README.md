@@ -1,4 +1,5 @@
 [![Analytics](https://ga-beacon.appspot.com/UA-75053442-1/stack-updater)](https://github.com/igrigorik/ga-beacon)
+[![Code Climate](https://codeclimate.com/github/levabd/stack-updater/badges/gpa.svg)](https://codeclimate.com/github/levabd/stack-updater)
 
 # What is it?
 Stack updater check dependencies and updates your app stack in a simplest way. 
