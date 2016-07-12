@@ -2,6 +2,7 @@
 
 from .. import logger
 
+
 class ProcessWrapper(object):
     """Wraps the subprocess popen method and provides logging."""
 

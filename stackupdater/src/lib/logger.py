@@ -15,8 +15,8 @@ class SizedTimedRotatingFileHandler(handlers.TimedRotatingFileHandler):
     to the next when the current file reaches a certain size, or at certain
     timed intervals
     """
-    def __init__(self, filename, max_bytes = 0, backup_count = 0, encoding = None,
-                 delay = 0, when = 'h', interval = 1, utc = False):
+    def __init__(self, filename, max_bytes=0, backup_count=0, encoding=None,
+                 delay=0, when='h', interval=1, utc=False):
         # If rotation/rollover is wanted, it doesn't make sense to use another
         # mode. If for example 'w' were specified, then if there were multiple
         # runs of the calling application, the logs from previous runs would be
@@ -38,13 +38,15 @@ class SizedTimedRotatingFileHandler(handlers.TimedRotatingFileHandler):
             self.stream = self._open()
         if self.maxBytes > 0:                   # are we rolling over?
             msg = "%s\n" % self.format(record)
-            self.stream.seek(0, 2)  #due to non-posix-compliant Windows feature
+            # due to non-posix-compliant Windows feature
+            self.stream.seek(0, 2)
             if self.stream.tell() + len(msg) >= self.maxBytes:
                 return 1
         t = int(time.time())
         if t >= self.rolloverAt:
             return 1
         return 0
+
 
 class Logger(Singleton):
 
@@ -80,12 +82,17 @@ class Logger(Singleton):
         :param log_type: Type of log to recording. Example logging.NOTSET
         """
         self.__log_file_path = os.path.join(path, self.__log_filename)
-        log_formatter = logging.Formatter("%(asctime)s [%(levelname)-8.8s] %(message)s")
+        log_formatter = logging.Formatter(
+            "%(asctime)s [%(levelname)-8.8s] %(message)s")
         self.__logger = logging.getLogger()
 
         file_handler = SizedTimedRotatingFileHandler(
-            self.__log_file_path, max_bytes = 1000000, backup_count = 5, interval = 24,
-            # encoding='bz2',  # uncomment for bz2 compression
+            self.__log_file_path,
+            max_bytes=1000000,
+            backup_count=5,
+            interval=24,
+            # encoding='bz2',
+            # uncomment for bz2 compression
             )
         file_handler.setFormatter(log_formatter)
         self.__logger.addHandler(file_handler)
@@ -105,10 +112,11 @@ class Logger(Singleton):
         """
 
         with open(self.__log_file_path, 'a') as logfile:
-            return subprocess.call(cmd if isinstance(cmd, list) else [cmd],
-                            cwd = path,
-                            stdout = logfile,
-                            stderr = logfile,
-                            shell = True)
+            return subprocess.call(
+                cmd if isinstance(cmd, list) else [cmd],
+                cwd=path,
+                stdout=logfile,
+                stderr=logfile,
+                shell=True)
 
-logger = Logger() #simple alias without ugly brackets
+logger = Logger()  # simple alias without ugly brackets
