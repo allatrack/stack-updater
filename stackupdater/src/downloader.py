@@ -21,7 +21,8 @@ class Downloader(object):
 
     @staticmethod
     def get_gist_files_path(gist, file_ending):
-        return [gist['files'][filename]["raw_url"] for filename in gist['files'] if filename.endswith(file_ending)]
+        return [gist['files'][filename]["raw_url"] for filename in
+                gist['files'] if filename.endswith(file_ending)]
 
     def install_gist(self):
 
