@@ -19,6 +19,11 @@ class Downloader(object):
             base_path, default_recipe_path())
         self.__gist_id = gist_id
 
+    @staticmethod
+    def get_gist_files_path(gist, file_ending):
+        return [gist['files'][filename]["raw_url"] for filename in
+                gist['files'] if filename.endswith(file_ending)]
+
     def install_gist(self):
 
         logger.info("Trying to get Gist")
@@ -26,10 +31,8 @@ class Downloader(object):
             'https://api.github.com/gists/{}'.format(self.__gist_id)))
         try:
             # first json file for config
-            config_file = [gist['files'][filename]["raw_url"] for filename in
-                           gist['files'] if filename.endswith('.json')][0]
-            bash_files = [gist['files'][filename]["raw_url"] for filename in
-                          gist['files'] if filename.endswith('.sh')]
+            config_file = self.get_gist_files_path(gist, '.json')[0]
+            bash_files = self.get_gist_files_path(gist, '.sh')
         except Exception as e:
             logger.critical(
                 "This is invalid gist_id or something else went wrong")
