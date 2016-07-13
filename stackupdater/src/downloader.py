@@ -29,8 +29,8 @@ class Downloader(object):
         gist = json.load(urllib2.urlopen(
             'https://api.github.com/gists/{}'.format(self.__gist_id)))
         try:
-            #first json file for config
-            config_file = self.get_gist_files_path1(gist, '.json')[0]
+            # first json file for config
+            config_file = self.get_gist_files_path(gist, '.json')[0]
             bash_files = self.get_gist_files_path(gist, '.sh')
         except Exception as e:
             logger.critical(
@@ -38,7 +38,7 @@ class Downloader(object):
             raise e
 
         logger.info("Trying to save recipe files")
-        try:{
+        try:
             bash_dir = os.path.join(self.__recipes_path, os.path.splitext(
                 os.path.basename(config_file))[0])
             if not os.path.exists(bash_dir):
