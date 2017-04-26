@@ -48,7 +48,7 @@ class Cli(object):
         """
         Download recipe from Gist
         """
-        if len(self.__cli_args.gist_id) > 0:  # ID of Gist not empty
+        if len(self.__cli_args.param) > 0:  # ID of Gist not empty
             recipe_downloader = Downloader(
                 self.__base_path, self.__cli_args.param)
             recipe_downloader.install_gist()
