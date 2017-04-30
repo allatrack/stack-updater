@@ -64,7 +64,7 @@ class Logger(Singleton):
         self.__logger.debug(msg, *args, **kwargs)
 
     def error(self, msg, *args, **kwargs):
-        self.__logger.debug(msg, *args, **kwargs)
+        self.__logger.error(msg, *args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
         self.__logger.warning(msg, *args, **kwargs)
